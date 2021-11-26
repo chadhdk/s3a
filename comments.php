@@ -28,18 +28,18 @@ if ( post_password_required() ) {
 		?>
 		<h2 class="comments-title">
 			<?php
-			$aaa_comment_count = get_comments_number();
-			if ( '1' === $aaa_comment_count ) {
+			$confetti_comment_count = get_comments_number();
+			if ( '1' === $confetti_comment_count ) {
 				printf(
 					/* translators: 1: title. */
-					esc_html__( 'One thought on &ldquo;%1$s&rdquo;', 'aaa' ),
+					esc_html__( 'One thought on &ldquo;%1$s&rdquo;', 'confetti' ),
 					'<span>' . wp_kses_post( get_the_title() ) . '</span>'
 				);
 			} else {
 				printf( 
 					/* translators: 1: comment count number, 2: title. */
-					esc_html( _nx( '%1$s thought on &ldquo;%2$s&rdquo;', '%1$s thoughts on &ldquo;%2$s&rdquo;', $aaa_comment_count, 'comments title', 'aaa' ) ),
-					number_format_i18n( $aaa_comment_count ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					esc_html( _nx( '%1$s thought on &ldquo;%2$s&rdquo;', '%1$s thoughts on &ldquo;%2$s&rdquo;', $confetti_comment_count, 'comments title', 'confetti' ) ),
+					number_format_i18n( $confetti_comment_count ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					'<span>' . wp_kses_post( get_the_title() ) . '</span>'
 				);
 			}
@@ -65,7 +65,7 @@ if ( post_password_required() ) {
 		// If comments are closed and there are comments, let's leave a little note, shall we?
 		if ( ! comments_open() ) :
 			?>
-			<p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'aaa' ); ?></p>
+			<p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'confetti' ); ?></p>
 			<?php
 		endif;
 

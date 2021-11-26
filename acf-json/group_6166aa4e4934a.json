@@ -1,0 +1,172 @@
+{
+    "key": "group_6166aa4e4934a",
+    "title": "Events fields",
+    "fields": [
+        {
+            "key": "field_6166aa65030ca",
+            "label": "Sub title",
+            "name": "sub_title",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_618bbd9e0b6fd",
+            "label": "Short description",
+            "name": "short_description",
+            "type": "textarea",
+            "instructions": "Appears on the Home page and the What's on page. +- 30 words",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_6166aa76030cb",
+            "label": "Start Date",
+            "name": "start_date",
+            "type": "date_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "d\/m\/Y",
+            "return_format": "Ymd",
+            "first_day": 1
+        },
+        {
+            "key": "field_6166aaa5030cc",
+            "label": "End Date",
+            "name": "end_date",
+            "type": "date_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "d\/m\/Y",
+            "return_format": "Ymd",
+            "first_day": 1
+        },
+        {
+            "key": "field_6166e0cfe0ab8",
+            "label": "Date Override",
+            "name": "date_override",
+            "type": "text",
+            "instructions": "You can use this to override the date field with custom text: eg Every Thursday, First Monday of the month",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_6166ad55030ce",
+            "label": "Custom Highlighted Text",
+            "name": "custom_highlighted_text",
+            "type": "text",
+            "instructions": "This will appear as an overlay on the block on the What's On page",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_6166ad97030cf",
+            "label": "Custom Call to Action",
+            "name": "custom_call_to_action",
+            "type": "text",
+            "instructions": "This will appear in the button for this event if it appears on the home page. Defaults to 'Read more'",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Read more",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_6166e12ee0ab9",
+            "label": "Featured Event",
+            "name": "featured_event",
+            "type": "true_false",
+            "instructions": "If this is ticked, the event will take up a full row if it is selected on the What's On page.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "event"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "acf_after_title",
+    "style": "seamless",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "modified": 1637154013
+}

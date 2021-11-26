@@ -4,96 +4,98 @@
  * Handles toggling the navigation menu for small screens and enables TAB key
  * navigation support for dropdown menus.
  */
-( function() {
+document.addEventListener('DOMContentLoaded',()=>{
+
+
 	const siteNavigation = document.getElementById( 'site-navigation' );
-
-	// Return early if the navigation don't exist.
-	if ( ! siteNavigation ) {
-		return;
-	}
-
-	const button = siteNavigation.getElementsByTagName( 'button' )[ 0 ];
-
-	// Return early if the button don't exist.
-	if ( 'undefined' === typeof button ) {
-		return;
-	}
-
-	const menu = siteNavigation.getElementsByTagName( 'ul' )[ 0 ];
-
-	// Hide menu toggle button if menu is empty and return early.
-	if ( 'undefined' === typeof menu ) {
-		button.style.display = 'none';
-		return;
-	}
-
-	if ( ! menu.classList.contains( 'nav-menu' ) ) {
-		menu.classList.add( 'nav-menu' );
-	}
-
+	const buttonHamburger = document.getElementById( 'hamburger' );
+	const navLinks = siteNavigation.querySelectorAll('li a');
 	// Toggle the .toggled class and the aria-expanded value each time the button is clicked.
-	button.addEventListener( 'click', function() {
-		siteNavigation.classList.toggle( 'toggled' );
-
-		if ( button.getAttribute( 'aria-expanded' ) === 'true' ) {
-			button.setAttribute( 'aria-expanded', 'false' );
-		} else {
-			button.setAttribute( 'aria-expanded', 'true' );
-		}
-	} );
+	buttonHamburger.addEventListener( 'click', toggleMenu );
 
 	// Remove the .toggled class and set aria-expanded to false when the user clicks outside the navigation.
-	document.addEventListener( 'click', function( event ) {
+	/*document.addEventListener( 'click', function( event ) {
 		const isClickInside = siteNavigation.contains( event.target );
-
 		if ( ! isClickInside ) {
-			siteNavigation.classList.remove( 'toggled' );
-			button.setAttribute( 'aria-expanded', 'false' );
+			closeMenu();
 		}
 	} );
+*/
+	navLinks.forEach(link=>link.addEventListener('click',()=>{
+		closeMenu();
+	}))
+	const headerwrap = document.querySelector('.site-header');
+	var lastScrollTop = 0;
 
-	// Get all the link elements within the menu.
-	const links = menu.getElementsByTagName( 'a' );
+	document.addEventListener("scroll", headerslide);
 
-	// Get all the link elements with children within the menu.
-	const linksWithChildren = menu.querySelectorAll( '.menu-item-has-children > a, .page_item_has_children > a' );
-
-	// Toggle focus each time a menu link is focused or blurred.
-	for ( const link of links ) {
-		link.addEventListener( 'focus', toggleFocus, true );
-		link.addEventListener( 'blur', toggleFocus, true );
-	}
-
-	// Toggle focus each time a menu link with children receive a touch event.
-	for ( const link of linksWithChildren ) {
-		link.addEventListener( 'touchstart', toggleFocus, false );
-	}
-
-	/**
-	 * Sets or removes .focus class on an element.
-	 */
-	function toggleFocus() {
-		if ( event.type === 'focus' || event.type === 'blur' ) {
-			let self = this;
-			// Move up through the ancestors of the current link until we hit .nav-menu.
-			while ( ! self.classList.contains( 'nav-menu' ) ) {
-				// On li elements toggle the class .focus.
-				if ( 'li' === self.tagName.toLowerCase() ) {
-					self.classList.toggle( 'focus' );
-				}
-				self = self.parentNode;
+	function headerslide(){
+		let st = window.pageYOffset || document.documentElement.scrollTop;
+		if ( st >= 100 && st <= 300) {
+			headerwrap.classList.add("addFixed");
+			headerwrap.classList.remove("slideInDown", "slideOut");
+		} 
+		else if( st > 300 && st <= 600){
+			headerwrap.classList.add("slideOut");
+			if( st<lastScrollTop){
+				headerwrap.classList.remove("slideInDown");
 			}
 		}
+		else if (st > 600 && st<lastScrollTop){
+			headerwrap.classList.add("slideOut","slideInDown");
+		}
+		else if (st > 600 && st>lastScrollTop){
+			headerwrap.classList.remove("slideInDown");
+		}
+		else {
+			headerwrap.classList.remove("slideInDown","slideOut","addFixed");
+		}
+		lastScrollTop = st;
+	}
 
-		if ( event.type === 'touchstart' ) {
-			const menuItem = this.parentNode;
-			event.preventDefault();
-			for ( const link of menuItem.parentNode.children ) {
-				if ( menuItem !== link ) {
-					link.classList.remove( 'focus' );
-				}
-			}
-			menuItem.classList.toggle( 'focus' );
+	/*Contact Us Modal*/
+
+	const newsletterModal = document.getElementById( 'pb_signup_container' );
+	const newsletterToggle = document.getElementById('newsletter_trigger');
+	const newsletterToggle2 = document.getElementById('newsletter_trigger-2');
+	const closeNewsletter = document.getElementById('close-signup');
+	newsletterToggle.addEventListener( 'click', toggleModal );
+	if(newsletterToggle2){
+		newsletterToggle2.addEventListener( 'click', toggleModal );
+	}
+	closeNewsletter.addEventListener( 'click', toggleModal );
+
+
+	function toggleMenu(){
+		siteNavigation.classList.toggle( 'toggled' );
+		buttonHamburger.classList.toggle('is-active');
+		document.documentElement.classList.toggle('scroll_lock');
+		if ( buttonHamburger.getAttribute( 'aria-expanded' ) === 'true' ) {
+			buttonHamburger.setAttribute( 'aria-expanded', 'false' );
+		} else {
+			buttonHamburger.setAttribute( 'aria-expanded', 'true' );
 		}
 	}
-}() );
+
+	function closeMenu(){
+		siteNavigation.classList.remove( 'toggled' );
+		buttonHamburger.classList.remove('is-active');
+		buttonHamburger.setAttribute( 'aria-expanded', 'false' );
+		document.documentElement.classList.remove('scroll_lock');
+	}
+
+	function toggleModal(e){
+		//closeMenu();
+		newsletterModal.classList.toggle( 'toggled' );
+		document.documentElement.classList.toggle('scrolly_lock');
+		document.body.classList.toggle('scroll_lock');
+		e.currentTarget.classList.toggle('active');
+		if ( e.currentTarget.getAttribute( 'aria-expanded' ) === 'true' ) {
+			e.currentTarget.setAttribute( 'aria-expanded', 'false' );
+		} else {
+			e.currentTarget.setAttribute( 'aria-expanded', 'true' );
+		}
+	}
+
+
+});

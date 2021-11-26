@@ -22,14 +22,14 @@
 			?>
 			<div class="entry-meta">
 				<?php
-				aaa_posted_on();
-				aaa_posted_by();
+				confetti_posted_on();
+				confetti_posted_by();
 				?>
 			</div><!-- .entry-meta -->
 		<?php endif; ?>
 	</header><!-- .entry-header -->
 
-	<?php aaa_post_thumbnail(); ?>
+	<?php confetti_post_thumbnail(); ?>
 
 	<div class="entry-content">
 		<?php
@@ -37,7 +37,7 @@
 			sprintf(
 				wp_kses(
 					/* translators: %s: Name of current post. Only visible to screen readers */
-					__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'aaa' ),
+					__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'confetti' ),
 					array(
 						'span' => array(
 							'class' => array(),
@@ -50,7 +50,7 @@
 
 		wp_link_pages(
 			array(
-				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'aaa' ),
+				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'confetti' ),
 				'after'  => '</div>',
 			)
 		);
@@ -58,6 +58,6 @@
 	</div><!-- .entry-content -->
 
 	<footer class="entry-footer">
-		<?php aaa_entry_footer(); ?>
+		<?php confetti_entry_footer(); ?>
 	</footer><!-- .entry-footer -->
 </article><!-- #post-<?php the_ID(); ?> -->
