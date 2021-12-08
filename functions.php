@@ -101,6 +101,7 @@ function confetti_scripts() {
 	wp_enqueue_script( 'confetti-swiper', get_template_directory_uri() . '/js/swiper-init.js', array(), CONFETTI_VERSION, true  );
 	if(is_front_page()){
 		wp_enqueue_script( 'confetti-animation', get_template_directory_uri() . '/js/confetti.js', array(), CONFETTI_VERSION, true  );
+		wp_enqueue_script( 'confetti-scroll', get_template_directory_uri() . '/js/home-scroll.js', array(), CONFETTI_VERSION, true  );
 	}
 	if(is_page('whats-on')){
 		wp_enqueue_script( 'confetti-filter', get_template_directory_uri() . '/js/filter.js', array(), CONFETTI_VERSION, true );

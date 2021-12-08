@@ -33,7 +33,7 @@ $this_id = get_option( 'page_for_posts' );
                 <section class="margins whats-on_response blog_response grid">
                     <?php while ( have_posts() ) :
                         the_post(); ?>
-                        <div class="event white bottom_slash">
+                        <div class="event grey bottom_slash">
                             <a href="<?php echo get_permalink(); ?>">
                                 <div class="image_container twothree image_bottom_slash">
                                     <?php echo get_the_post_thumbnail(get_the_ID(),'large'); ?>

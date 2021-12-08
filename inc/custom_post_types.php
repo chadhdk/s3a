@@ -39,6 +39,45 @@ function confetti_init(){
 	
 	register_post_type( 'event', $args );
 
+	$labels_cs = array(
+		'name'               => __( 'Case Studies', 'confetti' ),
+		'singular_name'      => __( 'Case Study', 'confetti' ),
+		'menu_name'          => __( 'Case Studies', 'confetti' ),
+		'name_admin_bar'     => __( 'Case Studies', 'confetti' ),
+		'add_new'            => __( 'Add New', 'confetti' ),
+		'add_new_item'       => __( 'Add New Case Study', 'confetti' ),
+		'new_item'           => __( 'New Case Study', 'confetti' ),
+		'edit_item'          => __( 'Edit Case Study', 'confetti' ),
+		'view_item'          => __( 'View Case Study', 'confetti' ),
+		'all_items'          => __( 'All Case Studies', 'confetti' ),
+		'search_items'       => __( 'Search Case Studies', 'confetti' ),
+		'parent_item_colon'  => __( 'Parent Case Studies:', 'confetti' ),
+		'not_found'          => __( 'No Case Studies found.', 'confetti' ),
+		'not_found_in_trash' => __( 'No Case Studies found in Trash.', 'confetti' )
+	);
+
+	$args_cs = array(
+		'labels'             => $labels_cs,
+        'description'        => __( 'A post type for S3A Case Studies.', 'confetti' ),
+		'public'             => true,
+		'publicly_queryable' => true,
+		'show_ui'            => true,
+		'show_in_menu'       => true,
+        'show_in_rest'       => true,
+		'query_var'          => true,
+		'rewrite'            => array( 'slug' => 'case-study' ),
+		'capability_type'    => 'post',
+		'has_archive'        => false,
+		'hierarchical'       => false,
+		'menu_position'      => 4,
+        'menu_icon'           =>'dashicons-open-folder',
+        'supports'           => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+        
+	);
+
+	
+	register_post_type( 'case-study', $args_cs );
+
 	$labels_tax= array(
 		'name' => _x( 'Event category', 'taxonomy general name' ),
 		'singular_name' => _x( 'Event category', 'taxonomy singular name' ),

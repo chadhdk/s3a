@@ -15,6 +15,7 @@
 
 .home{
 	#masthead{
+		background-image: linear-gradient(0deg, rgba(0,0,0,0), rgba(0,0,0,0.8));
 		.header-container{
 			background-color:transparent;
 			svg {
@@ -30,6 +31,7 @@
 			}
 		}
 		&.slideOut{
+			background-image: none;
 			.header-container{
 				background-color: $white;			
 				svg {
@@ -43,10 +45,19 @@
 	}
 }
 
+@include media700{
+	.home #masthead{
+			--header-height:160px;
+		.slideOut{
+			--header-height:100px;
+		}
+	}
+}
 #masthead{
 	svg {
 		fill: $body;
 		max-height: var(--header-height);
+		width:fit-content;
 	}
 }
 
@@ -132,8 +143,11 @@ header#masthead{
 	li {
 		position: relative;
 		font-size: 1.4rem;
-		font-weight: 600;
+		font-weight: 400;
 		margin-bottom: 0.5rem;
+		&:nth-child(1),&:nth-child(2),&:nth-child(3){
+			font-weight:700;
+		}
 	}
 
 	a {
@@ -208,19 +222,51 @@ header#masthead{
 	}
 	.home .main-navigation li a{
 		color:$white;
-	}
-
-	.home .slideOut .main-navigation li a{
-		color:$body;
-		transition:color var(--transition) ease;
-		&:hover {
-			color: $red;
+		&::after{
+			background-color: $white;
 		}
 	}
-	.main-navigation li a{
-		transition:color var(--transition) ease;
-		&:hover {
+
+	.home .slideOut .main-navigation li {
+		.current-menu-item a{
 			color: $red;
+			&::after{
+				background-color: $red;
+			}
+		}
+		a{
+			color:$body;
+			transition:color var(--transition) ease;
+			&::after {
+				background-color: $body;
+			}
+		}
+	}
+	.main-navigation li {
+		.current-menu-item a{
+			color: $red;
+			&::after{
+				background-color: $red;
+			}
+		}
+		a{
+			transition:color var(--transition) ease;
+
+			&::after {
+				content: '';
+				width: 8px;
+				height: 8px;
+				background-color: $body;
+				position: absolute;
+				border-radius: 8px;
+				bottom: -10px;
+				left: calc(50% - 4px);
+				transform: scale(0);
+				transition:transform 200ms cubic-bezier(.39,1.7,.82,.97);
+			}
+			&:hover::after{
+				transform:scale(1);
+			}
 		}
 	}
 }

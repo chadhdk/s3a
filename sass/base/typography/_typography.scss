@@ -73,13 +73,13 @@ big {
 }
 
 h1{
-	font-size:2rem;
+	font-size:1.8rem;
 	font-weight:700;
 	margin:0 0 1em;
 }
 
 h2{
-	font-size:1.4rem;
+	font-size:1.3rem;
 	font-weight:700;
 	margin:0 0 1em;
 }
@@ -110,10 +110,10 @@ h5 {
 
 @include media1200{
 	h1{
-		font-size:3rem;
+		font-size:2.6rem;
 	}
 	h2{
-		font-size:2.4rem;
+		font-size:2.2rem;
 	}
 	h3{
 		font-size:1.4rem;

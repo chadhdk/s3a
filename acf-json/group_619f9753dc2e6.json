@@ -1,6 +1,6 @@
 {
     "key": "group_619f9753dc2e6",
-    "title": "Blog Page",
+    "title": "Blog and Case Studies Page",
     "fields": [
         {
             "key": "field_619f99a4788b8",
@@ -107,6 +107,13 @@
                 "operator": "==",
                 "value": "63"
             }
+        ],
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "266"
+            }
         ]
     ],
     "menu_order": 0,
@@ -117,5 +124,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1637849602
+    "modified": 1638937761
 }

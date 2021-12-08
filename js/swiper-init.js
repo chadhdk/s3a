@@ -4,6 +4,7 @@
     if(swiperHero){
         const swiper = new Swiper('.swiper-hero', {
             loop: true,
+            effect:'fade',
             pagination: {
             el: '.swiper-pagination',
             },

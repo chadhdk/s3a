@@ -10,10 +10,17 @@ function get_hero_carousel($id){
                 <?php
                 while( have_rows('slides',$id) ) : the_row();
                     ?><div class="swiper-slide">
-                        <?php echo wp_get_attachment_image(get_sub_field('slider_image'), 'full'); ?>
+                        <?php echo wp_get_attachment_image(get_sub_field('slider_image'), 'full'); 
+                        $class=get_sub_field('slider_text_background');
+                        ?>
+
                         <div class="slider-text">
-                            <h2><?php echo get_sub_field('slider_text'); ?></h2>
-                            <h2><?php echo get_sub_field('slider_text_line_two'); ?></h2>
+                            <?php if(get_sub_field('slider_text')){ ?>
+                                <h2 class="<?php echo $class; ?>"><?php echo get_sub_field('slider_text'); ?></h2>
+                            <?php }
+                            if (get_sub_field('slider_text_line_two')){ ?>
+                                <h2 class="<?php echo $class; ?>"><?php echo get_sub_field('slider_text_line_two'); ?></h2>
+                            <?php } ?>
                         </div>
                     </div><?php
                 endwhile; 
@@ -30,7 +37,9 @@ function get_home_layouts($id){
         while ( have_rows('home_blocks', $id) ) : the_row();
             if( 'image_text_block' ==get_row_layout() ):
                 $styling = get_sub_field('styling');
-                $class = $styling?'grid wild padding white ':'flex calm full blue bg'; ?>
+                $wild_colour = get_sub_field('colour_scheme');
+                $calm_colour = get_sub_field('background_colour');
+                $class = $styling?'grid wild padding white ':'flex calm full bg '.$calm_colour; ?>
                 <section class="block image_text_block <?php echo $class; ?>">
                     <div class = "block_images">
                         <?php if($image_1 = get_sub_field('image_1')): ?>
@@ -43,7 +52,7 @@ function get_home_layouts($id){
                     </div>
                     <div class="block_text">
                         <?php if($header = get_sub_field('header')): ?>
-                            <h2><?php echo $header; ?></h2>
+                            <h2 class="<?php echo $wild_colour=='navy'?'toothpaste':$wild_colour; ?>"><?php echo $header; ?></h2>
                         <?php endif; ?>
                         <?php if($text = get_sub_field('text')): ?>
                             <?php echo apply_filters('the_content',$text); ?>
@@ -53,15 +62,16 @@ function get_home_layouts($id){
                             $link_url = $link['url'];
                             $link_title = $link['title'];
                             $link_target = $link['target'] ? $link['target'] : '_self'; ?>
-                            <a href="<?php echo esc_url($link_url); ?>" target="<?php echo esc_attr( $link_target ); ?>" class="decorative <?php echo $styling?'navy ':'white '; echo get_rand_shape_class(); ?>"><?php echo $link_title; ?></a>
+                            <a href="<?php echo esc_url($link_url); ?>" target="<?php echo esc_attr( $link_target ); ?>" class="decorative <?php echo $styling?$wild_colour.' ':'white '; echo get_rand_shape_class(); ?>"><?php echo $link_title; ?></a>
                         <?php endif; ?>
                     </div>
                 </section>
             <?php elseif( 'whats_on_block' == get_row_layout()): 
                 $format = get_sub_field('whats_on_format');
-                get_whatson_blocks($format);
+                $title = get_sub_field('whats_on_title');
+                get_whatson_blocks($format,$title);
             elseif( 'testimonial_block' == get_row_layout()): ?>
-                <section class="block testimonial margins">
+                <section class="block slide-in confetti testimonial margins">
                     <div class="magenta <?php echo get_rand_shape_class(); ?> ">
                         <h3><?php echo get_sub_field('testimonial_text'); ?></h3>
                         <h4><?php echo get_sub_field('testimonial_author');?></h4>
@@ -69,24 +79,30 @@ function get_home_layouts($id){
                 </section>
             <?php elseif( 'from_the_blog_block' == get_row_layout()): ?>
                 <?php 
-                    if(get_sub_field('featured_blog_post')){ 
+                    $number_posts = get_sub_field('number_blog_posts');
+                    if(get_sub_field('featured_blog_post')){
+                        $number_posts = $number_posts - 1; 
                         $featured = get_sub_field('featured_blog_post')[0];
-                        $posts = get_posts(array(
-                            'numberposts'=>3,
-                            'fields' => 'ids',
-                            'exclude'=>array($featured)
-                        ));
+                        if($number_posts>0){
+                            $posts = get_posts(array(
+                                'numberposts'=>$number_posts,
+                                'fields' => 'ids',
+                                'exclude'=>array($featured)
+                            ));
+                        }
                     } 
                     else { 
                         $posts = get_posts(array(
-                            'numberposts'=>4,
+                            'numberposts'=>$number_posts,
                             'fields' => 'ids',
                         ));
                         $featured = array_shift($posts);
-                    } ?>
-                <section class="block blog_block margins">
-                    <h1>From the blog</h1>
-                    <div class="flex flex_50">
+                    } 
+                    $has_posts = $number_posts>1 || !empty($posts);
+                    ?>
+                <section class="block slide-in confetti blog_block margins">
+                    <h1><?php echo get_sub_field('from_the_blog_title'); ?></h1>
+                    <div class="flex <?php echo $has_posts?'flex_50':'single_blog_post'; ?>">
                         <div class="green blog_item blog_item_featured">
                             <div class="image_container twothree image_bottom_slash">
                                 <?php echo get_the_post_thumbnail($featured,'large'); ?>
@@ -98,23 +114,25 @@ function get_home_layouts($id){
                                 <a href="<?php echo get_the_permalink($featured); ?>">Read more</a>
                             </div>
                         </div>
-                        <div class="white">
-                            <?php foreach($posts as $post_id){ ?>
-                                <div class="blog_item">
-                                    <div class="text_container">
-                                            <h5><?php echo get_the_category($post_id)[0]->name; ?></h5>
-                                            <h3><?php echo get_the_title($post_id); ?></h3>
-                                            <p><?php echo get_the_excerpt($post_id); ?></p>
-                                            <a href="<?php echo get_the_permalink($post_id); ?>">Read more</a>
+                        <?php if($has_posts){ ?>
+                            <div class="grey">
+                                <?php foreach($posts as $post_id){ ?>
+                                    <div class="blog_item">
+                                        <div class="text_container">
+                                                <h5><?php echo get_the_category($post_id)[0]->name; ?></h5>
+                                                <h3><?php echo get_the_title($post_id); ?></h3>
+                                                <p><?php echo get_the_excerpt($post_id); ?></p>
+                                                <a href="<?php echo get_the_permalink($post_id); ?>">Read more</a>
+                                        </div>
                                     </div>
-                                </div>
-                            <?php } ?>
-                            <a href="/posts" class="decorative purple <?php echo get_rand_shape_class(); ?>">View all posts</a>
-                        </div>
+                                <?php } ?>
+                                <a href="/blog" class="decorative purple <?php echo get_rand_shape_class(); ?>">View all posts</a>
+                            </div>
+                        <?php } ?>
                     </div>
                 </section>
             <?php elseif( 'link_blocks' == get_row_layout()): ?>
-                <section class="block link_block margins">
+                <section class="block confetti link_block margins">
                     <?php if( have_rows('links',$id) ): ?>
                         
                         <div class="flex flex_30 link_items">
@@ -125,7 +143,7 @@ function get_home_layouts($id){
                                 $postid = url_to_postid( get_sub_field('link'));
                                 $title = get_the_title($postid);
                                 endif; ?>
-                                <div class="link_item white">
+                                <div class="link_item grey">
                                     <a href="<?php echo get_sub_field('link'); ?>">    
                                         <h2><?php echo $title; ?></h2>
                                        
@@ -140,11 +158,43 @@ function get_home_layouts($id){
                     <?php endif; ?>
                 </section>
             <?php elseif( 'media_embed_block' == get_row_layout()): ?>
-                <section class="block media_block margins">
+                <section class="block confetti slide-in media_block margins">
                     <div class="media_block_inner violet">
-                        <div class="media_container">
-                            <?php echo get_sub_field('embeddable_media'); ?>
+                        <?php if(get_sub_field('media_title')){ ?>
+                            <h2><?php echo get_sub_field('media_title'); ?></h2>
+                        <?php }
+                        if(get_sub_field('media_description')){ ?>
+                            <div class="text_container">
+                                <?php echo apply_filters('the_content',get_sub_field('media_description')); ?>
+                            </div>
+                        <?php } ?>
+                        <?php if(have_rows('carousel')){ ?>
+                        <div class="carousel carousel--one_up page_carousel">
+                            <div class="swiper-wrapper">
+                                <?php while(have_rows('carousel')): the_row(); ?>
+                                    <div class="swiper-slide">
+                                    <?php if(get_sub_field('image')):
+                                        echo wp_get_attachment_image(get_sub_field('image'),'full');
+                                    elseif(get_sub_field('embedded_media')): ?>
+                                        <div class="media_container">
+                                            <?php echo get_sub_field('embedded_media'); ?>
+                                        </div>    
+                                    <?php endif; 
+                                    if(get_sub_field('caption')): ?>
+                                        <p><?php echo get_sub_field('caption'); ?></p>
+                                    <?php endif; ?>
+                                    </div>
+                                <?php endwhile; ?>
+                            </div>
+                            <div class="swiper-nav swiper-button-prev"></div><div class="swiper-nav swiper-button-next"></div>
                         </div>
+                        <?php }
+                        elseif(get_sub_field('embeddable_media')){ ?>
+                            <div class="media_container">
+                                <?php echo get_sub_field('embeddable_media'); ?>
+                            </div>
+                        <?php } ?>
+                        
                     </div>
                     <?php $media_caption = get_sub_field('media_caption'); 
                     if($media_caption){ ?>
@@ -156,7 +206,7 @@ function get_home_layouts($id){
     endif;
 }
 
-function get_whatson_blocks($format){
+function get_whatson_blocks($format,$title){
     $whatson = get_page_by_path('whats-on');
     if ($whatson) {
         $whatson_id = $whatson->ID;
@@ -185,8 +235,8 @@ function get_whatson_blocks($format){
             break;
     }
     if($posts){ ?>
-        <section class="block whatson_block padding bg yellow">
-            <h1>What's on</h1>
+        <section class="block whatson_block slide-in padding bg yellow">
+            <h1><?php echo $title; ?></h1>
             <div class="<?php echo $class; ?>">
                 <?php if($count>count($posts)){
                     $count = count($posts);
@@ -203,8 +253,8 @@ function get_whatson_blocks($format){
                             </div>
                         </a>
                         <div class="text_container">
-                            <h4><?php echo $event['title']; ?></h4>
-                            <p><strong><?php echo $event['sub_title']; ?></strong></p>
+                            <a href="<?php echo $event['permalink']; ?>"><h4><?php echo $event['title']; ?></h4></a>
+                            <p class="subtitle"><strong><?php echo $event['sub_title']; ?></strong></p>
                             <p><?php echo $event['short_description']; ?></p>
                             <p class="date"><?php echo $event['date']; ?></p>
                         </div>
@@ -597,4 +647,50 @@ function get_content_blocks($id){
             <?php endif;
         endwhile;
     endif;
+}
+
+function get_case_studies(){
+    $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+    $args = array(
+        'post_type'=>'case-study',
+        'posts_per_page' => 6,
+        'paged' => $paged
+    );
+    $the_query = new WP_Query( $args );
+    if ( $the_query->have_posts() ) :
+        while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
+            <div class="gold bg case-study">
+                <a href="<?php echo get_permalink(); ?>">
+                    <div class="image_container twothree">
+                        <?php echo get_the_post_thumbnail($post,'large'); ?>
+                    </div>
+                </a>
+                <div class="text_container">
+                    <h3><?php echo get_the_title(); ?></h3>
+                    <p><?php echo get_the_excerpt(); ?></p>
+                    <a href="<?php echo get_permalink(); ?>" class="decorative white <?php echo get_rand_shape_class(); ?>">
+                        View case study
+                    </a>
+                </div>
+            </div>
+        <?php endwhile;?>
+        <div class="pagination">
+        <?php $big = 999999999; // need an unlikely integer
+            echo paginate_links(
+                array(
+                    'base' => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
+                    'format' => '?paged=%#%',
+                    'current' => max(
+                        1,
+                        get_query_var('paged')
+                    ),
+                    'total' => $the_query->max_num_pages, //$q is your custom query
+                    'mid_size'=>4,
+                    'prev_text'=>'<', 
+                    'next_text'=>'>'
+                )
+            );?>
+        </div>
+    <?php endif;
+    wp_reset_postdata();
 }

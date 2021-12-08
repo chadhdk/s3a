@@ -18,10 +18,14 @@ $id = get_the_ID();
 	</header><!-- .entry-header -->
 	<section class="post-content margins grid">
 		<div class="post-thumbnail">
-			<?php echo get_the_post_thumbnail($id, 'large'); ?>
-			<p class="caption"><?php echo get_the_post_thumbnail_caption($id); ?></p>
+			<?php echo get_the_post_thumbnail($id, 'large'); 
+			$caption = get_the_post_thumbnail_caption($id);
+			if($caption):
+			?>
+			<p class="caption"><?php echo $caption; ?></p>
+			<?php endif; ?>
 		</div>
-	<div class="post-meta white">
+	<div class="post-meta grey">
 		<p class="date"><?php echo get_the_date('j M Y'); ?></p>
 		<?php get_social_share($id); ?>
 	</div>

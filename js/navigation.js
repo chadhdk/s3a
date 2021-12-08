@@ -13,21 +13,25 @@ document.addEventListener('DOMContentLoaded',()=>{
 	// Toggle the .toggled class and the aria-expanded value each time the button is clicked.
 	buttonHamburger.addEventListener( 'click', toggleMenu );
 
-	// Remove the .toggled class and set aria-expanded to false when the user clicks outside the navigation.
-	/*document.addEventListener( 'click', function( event ) {
-		const isClickInside = siteNavigation.contains( event.target );
-		if ( ! isClickInside ) {
-			closeMenu();
-		}
-	} );
-*/
+	/*Throttle for Scroll event*/
+	let throttleTimer;
+	const throttle = (callback, time) => {
+	if (throttleTimer) return;
+		throttleTimer = true;
+		setTimeout(() => {
+			callback();
+			throttleTimer = false;
+		}, time);
+	}
+
 	navLinks.forEach(link=>link.addEventListener('click',()=>{
 		closeMenu();
 	}))
 	const headerwrap = document.querySelector('.site-header');
+
 	var lastScrollTop = 0;
 
-	document.addEventListener("scroll", headerslide);
+	document.addEventListener("scroll", ()=>{throttle(headerslide,250);});
 
 	function headerslide(){
 		let st = window.pageYOffset || document.documentElement.scrollTop;

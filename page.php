@@ -21,7 +21,7 @@ get_header();
 		while ( have_posts() ) :
 			the_post();
 			if(is_front_page()){
-				get_template_part( 'template-parts/content', 'home' );
+				get_template_part( 'template-parts/content', 'front' );
 			}
 			else{	
 				get_template_part( 'template-parts/content', 'page' );
