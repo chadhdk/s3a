@@ -1,6 +1,6 @@
 {
     "key": "group_616692516a93a",
-    "title": "Footer Options",
+    "title": "Footer and Header Options",
     "fields": [
         {
             "key": "field_61669277920bb",
@@ -76,6 +76,22 @@
             "prepend": "",
             "append": "",
             "maxlength": ""
+        },
+        {
+            "key": "field_61bc65bc02fb5",
+            "label": "Link for My Account",
+            "name": "link_for_my_account",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
         }
     ],
     "location": [
@@ -95,5 +111,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1637831894
+    "modified": 1639736788
 }

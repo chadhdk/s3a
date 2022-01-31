@@ -10,8 +10,11 @@ document.addEventListener('DOMContentLoaded',()=>{
 	const siteNavigation = document.getElementById( 'site-navigation' );
 	const buttonHamburger = document.getElementById( 'hamburger' );
 	const navLinks = siteNavigation.querySelectorAll('li a');
-	// Toggle the .toggled class and the aria-expanded value each time the button is clicked.
+	const searchToggle = document.getElementById('search-toggle');
+	const searchContainer = document.querySelector('.nav-search-form');
+	
 	buttonHamburger.addEventListener( 'click', toggleMenu );
+	searchToggle.addEventListener('click', toggleSearch );
 
 	/*Throttle for Scroll event*/
 	let throttleTimer;
@@ -30,26 +33,24 @@ document.addEventListener('DOMContentLoaded',()=>{
 	const headerwrap = document.querySelector('.site-header');
 
 	var lastScrollTop = 0;
-
+	
+	windowHeight = window.innerHeight;
 	document.addEventListener("scroll", ()=>{throttle(headerslide,250);});
 
 	function headerslide(){
 		let st = window.pageYOffset || document.documentElement.scrollTop;
-		if ( st >= 100 && st <= 300) {
+		if ( st >= 100 && st <= 800) {
 			headerwrap.classList.add("addFixed");
 			headerwrap.classList.remove("slideInDown", "slideOut");
 		} 
-		else if( st > 300 && st <= 600){
-			headerwrap.classList.add("slideOut");
+		else if( st > 800 && st <= windowHeight){
+			headerwrap.classList.add("addFixed","slideOut");
 			if( st<lastScrollTop){
 				headerwrap.classList.remove("slideInDown");
 			}
 		}
-		else if (st > 600 && st<lastScrollTop){
+		else if (st > windowHeight){
 			headerwrap.classList.add("slideOut","slideInDown");
-		}
-		else if (st > 600 && st>lastScrollTop){
-			headerwrap.classList.remove("slideInDown");
 		}
 		else {
 			headerwrap.classList.remove("slideInDown","slideOut","addFixed");
@@ -78,6 +79,14 @@ document.addEventListener('DOMContentLoaded',()=>{
 			buttonHamburger.setAttribute( 'aria-expanded', 'false' );
 		} else {
 			buttonHamburger.setAttribute( 'aria-expanded', 'true' );
+		}
+	}
+	function toggleSearch(){
+		searchContainer.classList.toggle( 'toggled' );
+		if ( searchToggle.getAttribute( 'aria-expanded' ) === 'true' ) {
+			searchToggle.setAttribute( 'aria-expanded', 'false' );
+		} else {
+			searchToggle.setAttribute( 'aria-expanded', 'true' );
 		}
 	}
 

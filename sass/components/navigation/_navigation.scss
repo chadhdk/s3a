@@ -30,6 +30,12 @@
 				}
 			}
 		}
+		#site-navigation .nav-account svg, #search-toggle svg{
+			fill:$white;
+		}
+		form.search-form .search-submit{
+			filter:invert(1);
+		}
 		&.slideOut{
 			background-image: none;
 			.header-container{
@@ -40,6 +46,12 @@
 				.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after{
 					background-color:$body;
 				}
+			}
+			#site-navigation .nav-account svg, #search-toggle svg{
+				fill:$body;
+			}
+			form.search-form .search-submit{
+				filter:invert(0);
 			}
 		}
 	}
@@ -177,6 +189,7 @@ header#masthead{
 #site-navigation{
 	background-color: $white;
 	padding: var(--header-height) var(--margin);
+	flex-direction: column;
 }
 .modal{
 	z-index:10;
@@ -193,6 +206,35 @@ header#masthead{
 
 }
 
+#site-navigation .nav-account svg {
+    height: 50px;
+    width: 50px;
+    fill: $orange;
+}
+
+form.search-form {
+    display: flex;
+    height: 50px;
+}
+
+form.search-form .search-submit {
+    margin-left: 1rem;
+    filter: invert(47%) sepia(26%) saturate(6180%) hue-rotate(342deg) brightness(98%) contrast(90%);
+}
+
+input#search-form {
+    color: $orange;
+    border: 2px solid $orange;
+    padding: 1rem;
+}
+
+input#search-form::placeholder {
+    color: currentColor;
+}
+
+button#search-toggle {
+    display: none;
+}
 
 @include media1200{
 	#site-navigation {
@@ -267,6 +309,74 @@ header#masthead{
 			&:hover::after{
 				transform:scale(1);
 			}
+		}
+	}
+
+	#site-navigation {
+		flex-direction: row;
+		.nav-account svg {
+			fill: $body;
+			height: 1.4rem;
+		}
+	}
+	
+	.nav-search-form {
+		position: relative;
+		.search-form{
+			padding: 2.2rem;
+		}
+		&.toggled{
+			.search-form{
+				opacity:1;
+				transform: translateY(0);
+				
+			}
+			#search-toggle{
+				opacity:.7;
+				position:relative;
+				&::after{
+					content: 'x';
+					position: absolute;
+					top: 2px;
+					left: 6px;
+					font-size: 13px;
+					color:$orange;
+				}
+			}
+		}
+
+	}
+
+	.search-form {
+		height: 1.4rem;
+		align-items: center;
+		position: absolute;
+		bottom: -5rem;
+		right: -2rem;
+		opacity: 0;
+		transform: translateY(-30vh);
+		transition: opacity var(--transition) ease;
+		background-color: white;
+		clip-path: polygon(2% 0,100% 0, 98% 100%, 0% 89%);
+	}
+	
+	input#search-form {
+		color: $body;
+		border: 2px solid $body;
+		padding: .5rem;
+	}
+	
+	form.search-form .search-submit {
+		filter: unset;
+		height: 1.4rem;
+	}
+
+	button#search-toggle{
+		display:block;
+		background-color: transparent;
+		padding: 0;
+		svg {
+			height: 1.4rem;
 		}
 	}
 }

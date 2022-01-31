@@ -72,11 +72,7 @@ figcaption, .caption {
 /*Lists*/
 ul,
 ol {
-	margin: 0 0 1.5em 3em;
-}
-
-ul {
-	list-style: none;
+	margin: 0 0 1.5em 0;
 }
 
 ol {
@@ -336,6 +332,9 @@ input[type="submit"] {
 .image_container{
 	&.twothree{
 		@include proportional-container(66%);
+	}
+	&.sixteennine{
+		@include proportional-container(56.25);
 	}
 	img{
 		@include proportional-image;

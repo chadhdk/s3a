@@ -13,38 +13,60 @@ get_header();
 	<main id="primary" class="site-main">
 
 		<?php if ( have_posts() ) : ?>
+			<header class="content-header">
+                    <div class="header_inner">
+                        <div class="image_bottom_slash image_container">
+                            <?php echo get_the_post_thumbnail(get_option( 'page_for_posts' ), 'full'); ?>
+                        </div>
+                        <h1 class="magenta <?php echo get_rand_shape_class(); ?>">
+                            <?php echo  'Search Results for:<span> ' . esc_html(get_search_query()). '</span>'; ?>
+                        </h1>
+                    </div>
+                </header><!-- .entry-header -->
+			<?php ?>
+			<section class="margins whats-on_response blog_response grid">
+			<?php while ( have_posts() ) :
+				the_post(); ?>
+				<div class="event grey bottom_slash">
+					<a href="<?php echo get_permalink(); ?>">
+						<div class="image_container twothree image_bottom_slash">
+							<?php echo get_the_post_thumbnail(get_the_ID(),'large'); ?>
+						</div>
+						<div class="text_container">
+							<h3><?php echo get_the_title(); ?></h3>
+							<?php echo get_the_excerpt(); ?>
+						</div>
+					</a>
+					<a href="<?php echo get_permalink(); ?>" class="decorative magenta <?php echo get_rand_shape_class(); ?>">Read</a>
+				</div>
 
-			<header class="page-header">
-				<h1 class="page-title">
-					<?php
-					/* translators: %s: search query. */
-					printf( esc_html__( 'Search Results for: %s', 'confetti' ), '<span>' . get_search_query() . '</span>' );
-					?>
-				</h1>
-			</header><!-- .page-header -->
+			<?php endwhile; ?>
+		</section>
 
-			<?php
-			/* Start the Loop */
-			while ( have_posts() ) :
-				the_post();
+		<div class="blog_pagination margins">
+			<?php echo get_the_posts_pagination(array('mid_size'=>4,'prev_text'=>'<', 'next_text'=>'>')); ?>
+		</div>
+<?php 
+else :
 
-				/**
-				 * Run the loop for the search to output the results.
-				 * If you want to overload this in a child theme then include a file
-				 * called content-search.php and that will be used instead.
-				 */
-				get_template_part( 'template-parts/content', 'search' );
+	get_template_part( 'template-parts/content', 'none' );
 
-			endwhile;
-
-			the_posts_navigation();
-
-		else :
-
-			get_template_part( 'template-parts/content', 'none' );
-
-		endif;
-		?>
+endif;
+?>
+<?php $cta_footer = get_field('call_to_action_footer',$this_id);
+	if($cta_footer):
+	?><section class="cta_footer top_slash purple bg full">
+	<?php foreach($cta_footer as $block): ?>
+			<div class="text_container">
+				<h2><?php echo $block['title']; ?></h2>
+				<?php echo apply_filters('the_content',$block['description']); ?>
+				<a href="<?php echo $block['link']; ?>" class="decorative white <?php echo get_rand_shape_class(); ?>">
+					<?php echo $block['button_text']; ?>
+				</a>
+			</div>
+	<?php endforeach; ?>
+	</section><?php
+	endif; ?>
 
 	</main><!-- #main -->
 

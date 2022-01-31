@@ -62,7 +62,6 @@
 			</span>
 		</button>
 		<?php
-		
 		$modal = get_transient( 'newsletter_modal' );
 		if (false === $modal) {
 			$modal = file_get_contents("https://uk.patronbase.com/_Studio3Arts/Signup/Form?layout=none");
@@ -77,10 +76,12 @@
 			$modal = str_ireplace($find_open,$replace_open,$modal);
 			$modal = str_ireplace($find_open_alt,$replace_open,$modal);
 			$modal = str_ireplace($find_close,$replace_close,$modal);
+
+			/*Removing Stylesheets and other rubbish*/
+			$modal = preg_replace("/(<link).*(>)/",'',$modal);
 			set_transient('newsletter_modal', $modal, DAY_IN_SECONDS);
 		}
-		echo $modal;
-		
+		echo $modal;	
 	?>
 	</div>
 </div>

@@ -26,6 +26,8 @@ function get_hero_carousel($id){
                 endwhile; 
                 ?>
             </div>
+            <div class="swiper-nav swiper-button-prev"></div>
+            <div class="swiper-nav swiper-button-next"></div>
             <div class="swiper-pagination"></div>
         </div>
     <?php
@@ -173,9 +175,11 @@ function get_home_layouts($id){
                             <div class="swiper-wrapper">
                                 <?php while(have_rows('carousel')): the_row(); ?>
                                     <div class="swiper-slide">
-                                    <?php if(get_sub_field('image')):
-                                        echo wp_get_attachment_image(get_sub_field('image'),'full');
-                                    elseif(get_sub_field('embedded_media')): ?>
+                                    <?php if(get_sub_field('image')): ?>
+                                        <div class="image_container sixteennine">
+                                            <?php echo wp_get_attachment_image(get_sub_field('image'),'full'); ?>
+                                        </div>
+                                    <?php elseif(get_sub_field('embedded_media')): ?>
                                         <div class="media_container">
                                             <?php echo get_sub_field('embedded_media'); ?>
                                         </div>    
@@ -194,12 +198,12 @@ function get_home_layouts($id){
                                 <?php echo get_sub_field('embeddable_media'); ?>
                             </div>
                         <?php } ?>
-                        
+                        <?php $media_caption = get_sub_field('media_caption'); 
+                            if($media_caption){ ?>
+                                <h4><?php echo $media_caption; ?></h4>
+                            <?php } ?>
                     </div>
-                    <?php $media_caption = get_sub_field('media_caption'); 
-                    if($media_caption){ ?>
-                        <h4><?php echo $media_caption; ?></h4>
-                    <?php } ?>
+                    
                 </section>
             <?php endif;
         endwhile;
@@ -346,7 +350,9 @@ function get_whatson_response($filter=false){
                     <p><strong>'.$fields['sub_title'].'</strong></p>
                     <p>'.$fields['short_description'].'</p>
                     <p class="date">'.$fields['date'].'</p>
-                </div></a></div>';
+                </div></a>
+                <a class="magenta decorative '.get_rand_shape_class().'" href="'. $fields['permalink'] .'">'.$fields['cta'].'
+            </a></div>';
     }
     if(empty($output)){
         $output='<h3 class="whatson_empty">Nothing to see here</h3>';
@@ -395,51 +401,64 @@ function get_breadcrumbs($id){
 }
 
 function get_sidebar_blocks($id){
+    if(get_field('enable_nav_block',$id)): ?>
+        <div class="sidebar_block nav_block">
+            <?php $layouts=get_field('content_blocks',$id); 
+            $duplicate_test = array();
+            foreach($layouts as $layout): 
+                if($duplicate_test[$layout['acf_fc_layout']]):
+                    $duplicate_test[$layout['acf_fc_layout']]+=1;
+                else:
+                    $duplicate_test[$layout['acf_fc_layout']]=1;
+                endif;
+                if(!$layout['include_in_nav']){
+                    continue;
+                }
+                if('two_columns_with_headers'==$layout['acf_fc_layout']): 
+                    ?>
+                    <a href="#<?php echo $layout['acf_fc_layout'].'_'.$duplicate_test[$layout['acf_fc_layout']];?>"><?php echo $layout['header_1']; ?></a>
+                    <a href="#<?php echo $layout['acf_fc_layout'].'_'.$duplicate_test[$layout['acf_fc_layout']];?>"><?php echo $layout['header_2']; ?></a>
+                <?php 
+                elseif('big_text_with_image'==$layout['acf_fc_layout']):
+                    continue;
+                elseif('single_full_image'==$layout['acf_fc_layout']):
+                    continue;
+                elseif('featured_post_or_page'==$layout['acf_fc_layout']):
+                    continue;
+                elseif('contact_forms'==$layout['acf_fc_layout']): ?>
+                    <a href="#<?php echo $layout['acf_fc_layout'].'_'.$duplicate_test[$layout['acf_fc_layout']];?>"><?php echo ucfirst($layout['contact_form_type']); ?></a>
+                <?php else: ?>
+                    <a href="#<?php echo $layout['acf_fc_layout'].'_'.$duplicate_test[$layout['acf_fc_layout']];?>"><?php echo $layout['title']; ?></a>
+                <?php endif;
+            endforeach; ?>
+        </div>
+    <?php endif; 
+    if(get_field('child_page_nav',$id)): ?>
+        <?php $children=get_children( [
+                'post_parent'   => $id,
+                'fields'        => 'ids',
+                'post_type'     => 'page'
+            ] ); 
+        if(count($children)>0): ?>
+        <div class="sidebar_block nav_block">
+            <?php foreach($children as $child): ?>
+                <a href="<?php echo get_the_permalink($child); ?>" target="_blank"><?php echo get_the_title($child); ?></a>
+            <?php endforeach; ?>
+        </div>
+        <?php endif;
+    endif; 
     if( have_rows('sidebar_blocks',$id) ):
         while ( have_rows('sidebar_blocks', $id) ) : the_row();
             if( 'text_block' == get_row_layout() ): ?>
-                <div class="sidebar_block">
+                <div class="sidebar_block sidebar_text">
                     <h3><?php echo get_sub_field('title'); ?></h3>
                     <?php echo apply_filters('the_content', get_sub_field('info')); ?>
                     <?php if($link = get_sub_field('button')): ?>
                         <a href="<?php echo $link['url']; ?>" class="white decorative <?php echo get_rand_shape_class(); ?>" target="<?php echo $link['target']; ?>"><?php echo $link['title']; ?></a>
                     <?php endif; ?>
                 </div>
-            <?php elseif( 'nav_block' == get_row_layout() ): ?>
-                <?php if(get_sub_field('enable_nav_block')): ?>
-                    <div class="sidebar_block nav_block">
-                        <?php $layouts=get_field('content_blocks',$id); 
-                        $duplicate_test = array();
-                        foreach($layouts as $layout): 
-                            if($duplicate_test[$layout['acf_fc_layout']]):
-                                $duplicate_test[$layout['acf_fc_layout']]+=1;
-                            else:
-                                $duplicate_test[$layout['acf_fc_layout']]=1;
-                            endif;
-                            if('two_columns_with_headers'==$layout['acf_fc_layout']): 
-                                ?>
-                                <a href="#<?php echo $layout['acf_fc_layout'].'_'.$duplicate_test[$layout['acf_fc_layout']];?>"><?php echo $layout['header_1']; ?></a>
-                                <a href="#<?php echo $layout['acf_fc_layout'].'_'.$duplicate_test[$layout['acf_fc_layout']];?>"><?php echo $layout['header_2']; ?></a>
-                            <?php elseif('info_block'==$layout['acf_fc_layout']):
-                                continue;
-                            elseif('big_text_with_image'==$layout['acf_fc_layout']):
-                                continue;
-                            elseif('single_full_image'==$layout['acf_fc_layout']):
-                                continue;
-                            elseif('featured_post_or_page'==$layout['acf_fc_layout']):
-                                continue;
-                            elseif('related_events'==$layout['acf_fc_layout']): ?>
-                                <a href="#<?php echo $layout['acf_fc_layout'].'_'.$duplicate_test[$layout['acf_fc_layout']];?>">Related Events</a>
-                            <?php elseif('contact_forms'==$layout['acf_fc_layout']): ?>
-                                <a href="#<?php echo $layout['acf_fc_layout'].'_'.$duplicate_test[$layout['acf_fc_layout']];?>"><?php echo ucfirst($layout['contact_form_type']); ?></a>
-                            <?php else: ?>
-                                <a href="#<?php echo $layout['acf_fc_layout'].'_'.$duplicate_test[$layout['acf_fc_layout']];?>"><?php echo $layout['title']; ?></a>
-                            <?php endif;
-                        endforeach; ?>
-                    </div>
-                <?php endif; ?>
             <?php elseif( 'related_posts_list' == get_row_layout() ): ?>
-                <div class="sidebar_block">
+                <div class="sidebar_block sidebar_list">
                     <h3>Related blog posts</h3>
                     <?php $related = get_sub_field('related_posts_from_the_blog');
                     foreach($related as $item): ?>
@@ -483,6 +502,9 @@ function get_content_blocks($id){
             $hash = $layout_type.'_'.$duplicate_test[$layout_type]; 
             if( 'info_block' == $layout_type ): ?>
                 <div class="content_info padding wheat" id="<?php echo $hash; ?>">
+                    <?php if(get_sub_field('title')){ ?>
+                    <h3><?php echo get_sub_field('title'); ?></h3>
+                    <?php } ?>
                     <?php echo apply_filters('the_content',get_sub_field('info')); ?>
                 </div>
             <?php elseif( 'gallery' == $layout_type ): ?>
@@ -515,33 +537,64 @@ function get_content_blocks($id){
                         </div>
                     <?php endif; ?>
                 </div>
+            <?php elseif( 'testimonial_block' == get_row_layout()): ?>
+                <section class="block <?php echo get_sub_field('add_confetti')?'add_confetti':'white'; ?> testimonial">
+                    <div class="magenta <?php echo get_rand_shape_class(); ?> ">
+                        <h3><?php echo get_sub_field('testimonial_text'); ?></h3>
+                        <h4><?php echo get_sub_field('testimonial_author');?></h4>
+                    </div>
+                </section>
             <?php elseif( 'related_events' == $layout_type ): ?>
                 <div class="content_related padding toothpaste" id="<?php echo $hash; ?>">
-                    <h2>You may also like...</h2>
+                    <h2><?php echo get_sub_field('title'); ?></h2>
                     <?php $events = get_sub_field('events'); ?>
+                    <?php if(count($events)==1){ ?>
+                         <div class="single whatson_single">
+                         <?php foreach($events as $event_id): 
+                             $event = get_event_fields($event_id);?>
+                             <div class="whatson_block_item white right_slash">
+                                 <a href="<?php echo $event['permalink']; ?>">
+                                     <div class="image_container twothree image_bottom_slash">
+                                         <?php echo $event['thumbnail']; ?>
+                                     </div>
+                                 </a>
+                                 <div class="text_container">
+                                     <h4><?php echo $event['title']; ?></h4>
+                                     <p><strong><?php echo $event['sub_title']; ?></strong></p>
+                                     <p class="date"><?php echo $event['date']; ?></p>
+                                 </div>
+                                 <a class="magenta decorative <?php echo get_rand_shape_class(); ?>" href="<?php echo $event['permalink']; ?>">
+                                     <?php echo $event['cta']; ?>
+                                 </a>
+                             </div>
+                         <?php endforeach; ?>
+                     </div>
+                    <?php }
+                    else{ ?>
                     <div class="flex flex_30 whatson_grid">
-                    <?php foreach($events as $event_id): 
-                        $event = get_event_fields($event_id);?>
-                        <div class="whatson_block_item white bottom_slash">
-                            <a href="<?php echo $event['permalink']; ?>">
-                                <div class="image_container twothree image_bottom_slash">
-                                    <?php echo $event['thumbnail']; ?>
+                        <?php foreach($events as $event_id): 
+                            $event = get_event_fields($event_id);?>
+                            <div class="whatson_block_item white bottom_slash">
+                                <a href="<?php echo $event['permalink']; ?>">
+                                    <div class="image_container twothree image_bottom_slash">
+                                        <?php echo $event['thumbnail']; ?>
+                                    </div>
+                                </a>
+                                <div class="text_container">
+                                    <h4><?php echo $event['title']; ?></h4>
+                                    <p><strong><?php echo $event['sub_title']; ?></strong></p>
+                                    <p class="date"><?php echo $event['date']; ?></p>
                                 </div>
-                            </a>
-                            <div class="text_container">
-                                <h4><?php echo $event['title']; ?></h4>
-                                <p><strong><?php echo $event['sub_title']; ?></strong></p>
-                                <p class="date"><?php echo $event['date']; ?></p>
+                                <a class="magenta decorative <?php echo get_rand_shape_class(); ?>" href="<?php echo $event['permalink']; ?>">
+                                    <?php echo $event['cta']; ?>
+                                </a>
                             </div>
-                            <a class="magenta decorative <?php echo get_rand_shape_class(); ?>" href="<?php echo $event['permalink']; ?>">
-                                <?php echo $event['cta']; ?>
-                            </a>
-                        </div>
-                    <?php endforeach; ?>
-                    <a href="/whats-on" class="white decorative <?php echo get_rand_shape_class(); ?>">
-                        View All
-                    </a>
+                        <?php endforeach; ?>
+                        <a href="/whats-on" class="white decorative <?php echo get_rand_shape_class(); ?>">
+                            View All
+                        </a>
                     </div>
+                    <?php } ?>
                 </div>
             <?php elseif( 'map' == $layout_type ): ?>
                 <div class="content_map toothpaste padding both_slash" id="<?php echo $hash; ?>">
@@ -613,15 +666,18 @@ function get_content_blocks($id){
                 <div class="content_grid padding green"  id="<?php echo $hash; ?>">
                     <h2><?php echo get_sub_field('title'); ?></h2>
                     <div class="content_grid_inner grid">
-                        <?php $images = get_sub_field('images'); 
-                        foreach($images as $image): ?>
+                        <?php if(have_rows('images_repeater')):
+                        while(have_rows('images_repeater')):the_row() ?>
                             <div class="content_grid_item">
-                                <div class="image_container round">
-                                    <?php echo wp_get_attachment_image($image,'medium'); ?>
-                                </div>
-                                <h4><?php echo wp_get_attachment_caption( $image); ?></h4>
+                                <a href="<?php echo get_sub_field('link'); ?>">
+                                    <div class="image_container round">
+                                        <?php echo wp_get_attachment_image(get_sub_field('image'),'medium'); ?>
+                                    </div>
+                                    <h4><?php echo get_sub_field('caption'); ?></h4>
+                                </a>
                             </div>
-                        <?php endforeach; ?>
+                        <?php endwhile; 
+                        endif; ?>
                     </div>
                 </div>
             <?php elseif( 'featured_post_or_page' == $layout_type ):
@@ -644,6 +700,55 @@ function get_content_blocks($id){
                         </div>
                     </div>
                 </div>
+                <?php elseif( 'link_block' == get_row_layout()): ?>
+                <section class="block <?php echo get_sub_field('add_confetti')?'add_confetti':'white'; ?> link_block margins">
+                    <?php if( have_rows('link',$id) ): ?>
+                        
+                        <div class="flex flex_30 link_items">
+                            <?php while ( have_rows('link', $id) ) : the_row(); 
+                                if (get_sub_field('link_title')):
+                                    $title = get_sub_field('link_title');
+                                else:
+                                $postid = url_to_postid( get_sub_field('link'));
+                                $title = get_the_title($postid);
+                                endif; ?>
+                                <div class="link_item grey">
+                                    <a href="<?php echo get_sub_field('link'); ?>">    
+                                        <h2><?php echo $title; ?></h2>
+                                       
+                                    <p><?php echo get_sub_field('link_description'); ?></p>
+                                    </a> 
+                                    <a href="<?php echo get_sub_field('link'); ?>" class="decorative navy <?php echo get_rand_shape_class(); ?>">
+                                        <?php echo get_sub_field('button_text'); ?>
+                                    </a>
+                                </div>
+                            <?php endwhile; ?>
+                        </div>
+                    <?php endif; ?>
+                </section>
+            <?php elseif( 'media_embed_block' == get_row_layout()): ?>
+                <section class="block <?php echo get_sub_field('add_confetti')?'add_confetti':'white'; ?> media_block margins">
+                    <div class="media_block_inner violet">
+                        <?php if(get_sub_field('media_title')){ ?>
+                            <h2><?php echo get_sub_field('title'); ?></h2>
+                        <?php }
+                        if(get_sub_field('media_description')){ ?>
+                            <div class="text_container">
+                                <?php echo apply_filters('the_content',get_sub_field('media_description')); ?>
+                            </div>
+                        <?php } 
+                        if(get_sub_field('embeddable_media')){ ?>
+                            <div class="media_container">
+                                <?php echo get_sub_field('embeddable_media'); ?>
+                            </div>
+                        <?php } ?>
+                        <?php $media_caption = get_sub_field('media_caption'); 
+                            if($media_caption){ ?>
+                                <h4><?php echo $media_caption; ?></h4>
+                            <?php } ?>
+                    </div>
+                    
+                </section>
             <?php endif;
         endwhile;
     endif;

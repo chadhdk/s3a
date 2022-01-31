@@ -54,5 +54,18 @@
 				)
 			);
 			?>
+			<div class="nav-account">
+				<a href="<?php echo get_field('link_for_my_account','option'); ?>">
+					<span class="screen-reader-text">My Account</span>
+					<?php echo file_get_contents(get_template_directory() . '/assets/acc.svg'); ?>
+				</a>
+			</div>
+			<div class="nav-search-form">
+				<?php get_search_form(); ?>
+				<button id="search-toggle" aria-controls="search-form" aria-expanded="false">
+					<span class="screen-reader-text">Open Search</span>
+					<?php echo file_get_contents(get_template_directory() . '/assets/search.svg'); ?>
+				</button>
+			</div>
 		</nav><!-- #site-navigation -->
 	</header><!-- #masthead -->
