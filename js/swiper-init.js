@@ -28,6 +28,7 @@
                 },
                 simulateTouch:true,
                 centeredSlides:true,
+                slideToClickedSlide:true,
                 slidesPerView: 1,
                 spaceBetween:16,
             }
@@ -47,6 +48,8 @@
             }
             const carouselInstance = new Swiper(carousel,options);
         })
+        
     }
+
 }());
 

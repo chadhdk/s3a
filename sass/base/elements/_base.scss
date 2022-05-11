@@ -6,7 +6,7 @@
 @include media700{
 	:root{
 		--margin:6vw;
-		--header-height:100px;
+		--header-height:160px;
 	}
 }
 
@@ -58,6 +58,7 @@ img {
 
 figure {
 	margin: 1rem 0; // Extra wide images within figure tags don't overflow the content area.
+	display:inline-block;
 	img{
 		display:block;
 	}
@@ -191,6 +192,7 @@ input[type="submit"] {
 		background-repeat: no-repeat;
 		background-size: auto 100%;
 		background-attachment: fixed;
+		background-position-x: 20%;
 	}
 }
 
@@ -274,6 +276,7 @@ input[type="submit"] {
 		background-repeat: no-repeat;
 		background-size: auto 100%;
 		background-attachment: fixed;
+		background-position-x: 50%;
 	}
 }
 

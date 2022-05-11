@@ -68,6 +68,26 @@ function get_home_layouts($id){
                         <?php endif; ?>
                     </div>
                 </section>
+            <?php elseif( 'text_block' ==get_row_layout() ):
+                $calm_colour = get_sub_field('background_colour');
+                $class = 'flex calm full bg '.$calm_colour; ?>
+                <section class="block text_block <?php echo $class; ?>">
+                    <div class="block_text">
+                        <?php if($header = get_sub_field('header')): ?>
+                            <h2 class="<?php echo $wild_colour=='navy'?'toothpaste':$wild_colour; ?>"><?php echo $header; ?></h2>
+                        <?php endif; ?>
+                        <?php if($text = get_sub_field('text')): ?>
+                            <?php echo apply_filters('the_content',$text); ?>
+                        <?php endif; ?>
+                        <?php if(get_sub_field('button')): 
+                            $link = get_sub_field('button');
+                            $link_url = $link['url'];
+                            $link_title = $link['title'];
+                            $link_target = $link['target'] ? $link['target'] : '_self'; ?>
+                            <a href="<?php echo esc_url($link_url); ?>" target="<?php echo esc_attr( $link_target ); ?>" class="decorative <?php echo $styling?$wild_colour.' ':'white '; echo get_rand_shape_class(); ?>"><?php echo $link_title; ?></a>
+                        <?php endif; ?>
+                    </div>
+                </section>
             <?php elseif( 'whats_on_block' == get_row_layout()): 
                 $format = get_sub_field('whats_on_format');
                 $title = get_sub_field('whats_on_title');
@@ -185,7 +205,7 @@ function get_home_layouts($id){
                                         </div>    
                                     <?php endif; 
                                     if(get_sub_field('caption')): ?>
-                                        <p><?php echo get_sub_field('caption'); ?></p>
+                                        <h4><?php echo get_sub_field('caption'); ?></h4>
                                     <?php endif; ?>
                                     </div>
                                 <?php endwhile; ?>
@@ -205,6 +225,75 @@ function get_home_layouts($id){
                     </div>
                     
                 </section>
+                <?php elseif( 'contact_forms' == $layout_type ): ?>
+                <div class="content_contact margins white"  id="<?php echo $hash; ?>">
+                    <?php $contact_type = get_sub_field('contact_form_type');
+                    if('contact'==$contact_type): ?>
+                        <h2>Contact us</h2>
+                        <div class="content_contact--text">
+                            <?php echo apply_filters('the_content',get_field('additional_info_for_contact_forms','option')); ?>
+                            <address>
+                                <p><?php echo get_field('address','option'); ?></p>
+                                <p></p>
+                                <p><a href="tel:<?php echo get_field('phone_number','option'); ?>"><?php echo get_field('phone_number','option'); ?></a></p>
+                                <p><a href="mailto:<?php echo get_field('email_address','option'); ?>"><?php echo get_field('email_address','option'); ?></a></p>
+                                <p></p>
+                                <p><?php echo get_field('opening_hours','option'); ?></p>
+                            </address>
+                        </div>
+                        <?php echo do_shortcode('[contact-form-7 id="192" title="Contact Us"]');
+                    elseif('venue'==$contact_type): ?>
+                        <h2>Venue hire</h2>
+                        <div class="content_contact--text">
+                            <?php echo apply_filters('the_content',get_field('additional_info_for_venue_forms','option')); ?>
+                            <address>
+                                <p><?php echo get_field('address','option'); ?></p>
+                                <p></p>
+                                <p><a href="tel:<?php echo get_field('phone_number','option'); ?>"><?php echo get_field('phone_number','option'); ?></a></p>
+                                <p><a href="mailto:<?php echo get_field('email_address','option'); ?>"><?php echo get_field('email_address','option'); ?></a></p>
+                            </address>
+                        </div>
+                       <?php echo do_shortcode('[contact-form-7 id="191" title="Venue Hire"]');
+                    elseif('newsletter'==$contact_type):
+                        ?>
+                        <button id="newsletter_trigger-2" class="large_button gold <?php echo get_rand_shape_class(); ?>"  aria-controls="pb_signup_container" aria-expanded="false" >Sign up to our newsletter</button>
+                        <?php
+                    endif;
+                    ?>
+                </div>
+            <?php elseif( 'grid_of_images' == $layout_type ): ?>
+                <div class="content_grid padding green"  id="<?php echo $hash; ?>">
+                    <h2><?php echo get_sub_field('title'); ?></h2>
+                    <div class="content_grid--description">
+                        <?php echo apply_filters('the_content',get_sub_field('description')); ?>
+                    </div>
+                    <div class="content_grid_inner grid">
+                        <?php if(have_rows('images_repeater')):
+                        while(have_rows('images_repeater')):the_row() ?>
+                            <div class="content_grid_item">
+                                <a href="<?php echo get_sub_field('link'); ?>">
+                                    <div class="image_container round">
+                                        <?php echo wp_get_attachment_image(get_sub_field('image'),'medium'); ?>
+                                    </div>
+                                    <h4><?php echo get_sub_field('caption'); ?></h4>
+                                </a>
+                            </div>
+                        <?php endwhile; 
+                        endif; ?>
+                    </div>
+                </div>
+            <?php elseif( 'map' == $layout_type ): ?>
+            <div class="content_map toothpaste padding both_slash" id="<?php echo $hash; ?>">
+                <div class="grid map-inner">
+                    <h2><?php echo get_sub_field('title'); ?></h2>
+                    <div class="map_text">
+                        <?php echo apply_filters('the_content',get_sub_field('description')); ?>
+                    </div>
+                    <div class="media_container">
+                        <?php echo get_sub_field('google_map_embed_url'); ?>
+                    </div>
+                </div>
+            </div>
             <?php endif;
         endwhile;
     endif;
@@ -239,7 +328,7 @@ function get_whatson_blocks($format,$title){
             break;
     }
     if($posts){ ?>
-        <section class="block whatson_block slide-in padding bg yellow">
+        <section class="block whatson_block padding bg yellow">
             <h1><?php echo $title; ?></h1>
             <div class="<?php echo $class; ?>">
                 <?php if($count>count($posts)){
@@ -258,7 +347,7 @@ function get_whatson_blocks($format,$title){
                         </a>
                         <div class="text_container">
                             <a href="<?php echo $event['permalink']; ?>"><h4><?php echo $event['title']; ?></h4></a>
-                            <p class="subtitle"><strong><?php echo $event['sub_title']; ?></strong></p>
+                            <?php /*<p class="subtitle"><strong><?php echo $event['sub_title']; ?></strong></p>*/ ?>
                             <p><?php echo $event['short_description']; ?></p>
                             <p class="date"><?php echo $event['date']; ?></p>
                         </div>
@@ -347,7 +436,6 @@ function get_whatson_response($filter=false){
         $output.='
                 <div class="text_container">
                     <h3>'.$fields['title'].'</h3>
-                    <p><strong>'.$fields['sub_title'].'</strong></p>
                     <p>'.$fields['short_description'].'</p>
                     <p class="date">'.$fields['date'].'</p>
                 </div></a>
@@ -382,6 +470,72 @@ function get_whatson_response($filter=false){
             </div>';
         }
         $output.='</div>';
+    }
+    return $output;
+    
+}
+function get_whatson_archive($paged){
+    $id = get_page_by_path('whats-on');
+    $current_events = get_field('events',$id);
+    $args = array(
+        'post_type'=>'event',
+        'posts_per_page'=>12,
+        'order'=>'DESC',
+        'post_status'=>'publish',
+        'paged'=>$paged,
+        'meta_key'=>'start_date',
+        'orderby'=>'meta_value_num',
+        'post__not_in'=>$current_events,
+    );
+    $the_query = new WP_Query( $args );
+    $output='';
+    if ( $the_query->have_posts() ) {
+
+         while ( $the_query->have_posts() ) {
+            $the_query->the_post();
+            $fields = get_event_fields($event);
+            $class='white bottom_slash';
+            $image_class='image_bottom_slash';
+            $output.='<div class="event '.$class.'">';
+            $output.='<a href="'.$fields['permalink'].'">
+                        <div class="image_container twothree '.$image_class.' ">'
+                            .$fields['thumbnail'].'
+                        </div>'
+                    ;
+            if($fields['highlight_text']){
+                $output.='<div class="highlight_text magenta">'.$fields['highlight_text'].'</div>';
+            }
+            $output.='
+                    <div class="text_container">
+                        <h3>'.$fields['title'].'</h3>
+                        <p><strong>'.$fields['sub_title'].'</strong></p>
+                        <p>'.$fields['short_description'].'</p>
+                        <p class="date">'.$fields['date'].'</p>
+                    </div></a>
+                    <a class="magenta decorative '.get_rand_shape_class().'" href="'. $fields['permalink'] .'">'.$fields['cta'].'
+                </a></div>';
+         }
+         $output .='<div class="pagination">';
+         $url ='/event-archive%_%';
+         $output.= paginate_links( array(
+            'base'         => $url,
+            'total'        => $the_query->max_num_pages,
+            'current'      => max( 1, $paged),
+            'format'       => '?paged=%#%',
+            'show_all'     => false,
+            'type'         => 'plain',
+            'end_size'     => 5,
+            'mid_size'     => 1,
+            'prev_next'    => true,
+            'prev_text'    => '<span class="screen-reader-text">Previous Page</span> <',
+            'next_text'    => '<span class="screen-reader-text">Next Page</span> >',
+            'add_args'     => false,
+            'add_fragment' => '',
+         ) );
+         $output.='</div>';
+    }
+    else{
+        $output='<h3 class="whatson_empty">Nothing to see here</h3>';
     }
     return $output;
     
@@ -503,7 +657,7 @@ function get_content_blocks($id){
             if( 'info_block' == $layout_type ): ?>
                 <div class="content_info padding wheat" id="<?php echo $hash; ?>">
                     <?php if(get_sub_field('title')){ ?>
-                    <h3><?php echo get_sub_field('title'); ?></h3>
+                    <h2><?php echo get_sub_field('title'); ?></h2>
                     <?php } ?>
                     <?php echo apply_filters('the_content',get_sub_field('info')); ?>
                 </div>
@@ -511,8 +665,12 @@ function get_content_blocks($id){
                 <div class="content_gallery padding <?php echo $type=='event'?'black':'wheat'; ?>" id="<?php echo $hash; ?>">
                     <h2><?php echo get_sub_field('title'); ?></h2>
                     <?php if(get_sub_field('description')): ?>
-                        <div class="two_col">
-                            <?php echo apply_filters('the_content',get_sub_field('description')); ?>
+                        <?php $description = apply_filters('the_content',get_sub_field('description')); 
+                        $pattern = "/<p>.*?<\/p>/m";
+                        $paragraph_count=preg_match_all($pattern,$description);
+                        ?>
+                        <div class="<?php echo $paragraph_count>1?'two_col':'one_col'; ?>">
+                           <?php echo $description; ?>
                         </div>
                     <?php endif; ?>
                     <?php if(have_rows('carousel')): ?>
@@ -637,23 +795,29 @@ function get_content_blocks($id){
                     <?php $contact_type = get_sub_field('contact_form_type');
                     if('contact'==$contact_type): ?>
                         <h2>Contact us</h2>
-                        <address>
-                            <p><?php echo get_field('address','option'); ?></p>
-                            <p></p>
-                            <p><a href="tel:<?php echo get_field('phone_number','option'); ?>"><?php echo get_field('phone_number','option'); ?></a></p>
-                            <p><a href="mailto:<?php echo get_field('email_address','option'); ?>"><?php echo get_field('email_address','option'); ?></a></p>
-                            <p></p>
-                            <p><?php echo get_field('opening_hours','option'); ?></p>
-                        </address>
+                        <div class="content_contact--text">
+                            <?php echo apply_filters('the_content',get_field('additional_info_for_contact_forms','option')); ?>
+                            <address>
+                                <p><?php echo get_field('address','option'); ?></p>
+                                <p></p>
+                                <p><a href="tel:<?php echo get_field('phone_number','option'); ?>"><?php echo get_field('phone_number','option'); ?></a></p>
+                                <p><a href="mailto:<?php echo get_field('email_address','option'); ?>"><?php echo get_field('email_address','option'); ?></a></p>
+                                <p></p>
+                                <p><?php echo get_field('opening_hours','option'); ?></p>
+                            </address>
+                        </div>
                         <?php echo do_shortcode('[contact-form-7 id="192" title="Contact Us"]');
                     elseif('venue'==$contact_type): ?>
                         <h2>Venue hire</h2>
-                        <address>
-                            <p><?php echo get_field('address','option'); ?></p>
-                            <p></p>
-                            <p><a href="tel:<?php echo get_field('phone_number','option'); ?>"><?php echo get_field('phone_number','option'); ?></a></p>
-                            <p><a href="mailto:<?php echo get_field('email_address','option'); ?>"><?php echo get_field('email_address','option'); ?></a></p>
-                        </address>
+                        <div class="content_contact--text">
+                            <?php echo apply_filters('the_content',get_field('additional_info_for_venue_forms','option')); ?>
+                            <address>
+                                <p><?php echo get_field('address','option'); ?></p>
+                                <p></p>
+                                <p><a href="tel:<?php echo get_field('phone_number','option'); ?>"><?php echo get_field('phone_number','option'); ?></a></p>
+                                <p><a href="mailto:<?php echo get_field('email_address','option'); ?>"><?php echo get_field('email_address','option'); ?></a></p>
+                            </address>
+                        </div>
                        <?php echo do_shortcode('[contact-form-7 id="191" title="Venue Hire"]');
                     elseif('newsletter'==$contact_type):
                         ?>
@@ -665,6 +829,9 @@ function get_content_blocks($id){
             <?php elseif( 'grid_of_images' == $layout_type ): ?>
                 <div class="content_grid padding green"  id="<?php echo $hash; ?>">
                     <h2><?php echo get_sub_field('title'); ?></h2>
+                    <div class="content_grid--description">
+                        <?php echo apply_filters('the_content',get_sub_field('description')); ?>
+                    </div>
                     <div class="content_grid_inner grid">
                         <?php if(have_rows('images_repeater')):
                         while(have_rows('images_repeater')):the_row() ?>
@@ -748,6 +915,37 @@ function get_content_blocks($id){
                             <?php } ?>
                     </div>
                     
+                </section>
+            <?php elseif( 'image_text_block' ==get_row_layout() ):
+                $styling = get_sub_field('styling');
+                $wild_colour = get_sub_field('colour_scheme');
+                $calm_colour = get_sub_field('background_colour');
+                $class = $styling?'grid wild padding white ':'flex calm full bg '.$calm_colour; ?>
+                <section class="block image_text_block <?php echo $class; ?>">
+                    <div class = "block_images">
+                        <?php if($image_1 = get_sub_field('image_1')): ?>
+                            <div class="block_images--large"><?php echo wp_get_attachment_image($image_1, 'large'); ?></div>
+                        <?php endif; 
+                        ?>
+                        <?php if( $styling && get_sub_field('image_2')): ?>
+                            <div class="block_images--large"><?php echo wp_get_attachment_image(get_sub_field('image_2'), 'large'); ?></div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="block_text">
+                        <?php if($header = get_sub_field('header')): ?>
+                            <h2 class="<?php echo $wild_colour=='navy'?'toothpaste':$wild_colour; ?>"><?php echo $header; ?></h2>
+                        <?php endif; ?>
+                        <?php if($text = get_sub_field('text')): ?>
+                            <?php echo apply_filters('the_content',$text); ?>
+                        <?php endif; ?>
+                        <?php if(get_sub_field('button')): 
+                            $link = get_sub_field('button');
+                            $link_url = $link['url'];
+                            $link_title = $link['title'];
+                            $link_target = $link['target'] ? $link['target'] : '_self'; ?>
+                            <a href="<?php echo esc_url($link_url); ?>" target="<?php echo esc_attr( $link_target ); ?>" class="decorative <?php echo $styling?$wild_colour.' ':'white '; echo get_rand_shape_class(); ?>"><?php echo $link_title; ?></a>
+                        <?php endif; ?>
+                    </div>
                 </section>
             <?php endif;
         endwhile;

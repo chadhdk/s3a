@@ -168,8 +168,8 @@ add_action( 'wp_before_admin_bar_render', 'confetti_admin_bar_render' );
  */
 if( function_exists('acf_add_options_page') ) {
 	acf_add_options_page(array(
-		'page_title' 	=> 'Header and Footer Options',
-		'menu_title'	=> 'Header and Footer Options',
+		'page_title' 	=> 'Studio 3 Arts Options',
+		'menu_title'	=> 'Studio 3 Arts Options',
 		'menu_slug' 	=> 'footer_options',
 		'capability'	=> 'activate_plugins',
 		'position'		=> '9',

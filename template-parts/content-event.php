@@ -21,7 +21,7 @@ $event = get_event_fields($id);
 			</h1>
 		</div>
 		<div class="event_details margins flex flex_50">
-			<h3><?php echo $event['short_description']; ?></h3>
+			<h3><?php echo $event['sub_title']; ?></h3>
 			<p class="date"><?php echo $event['date']; ?></p>
 		</div>
 	</header><!-- .entry-header -->

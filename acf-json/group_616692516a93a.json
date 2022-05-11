@@ -92,6 +92,44 @@
             },
             "default_value": "",
             "placeholder": ""
+        },
+        {
+            "key": "field_6278930756767",
+            "label": "Additional info for contact forms",
+            "name": "additional_info_for_contact_forms",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 0,
+            "delay": 0
+        },
+        {
+            "key": "field_6278945cf9cd1",
+            "label": "Additional info for venue hire forms",
+            "name": "additional_info_for_venue_forms",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 0,
+            "delay": 0
         }
     ],
     "location": [
@@ -111,5 +149,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1639736788
+    "modified": 1652069492
 }

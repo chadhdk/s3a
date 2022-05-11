@@ -134,7 +134,7 @@
                     "label": "Button text",
                     "name": "button_text",
                     "type": "text",
-                    "instructions": "Defaults to 'Learn more'",
+                    "instructions": "Defaults to 'More'",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -142,7 +142,7 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "Learn more",
+                    "default_value": "More",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
@@ -231,7 +231,7 @@
                     "label": "Button text",
                     "name": "button_text",
                     "type": "text",
-                    "instructions": "Defaults to 'Learn more'",
+                    "instructions": "Defaults to 'More'",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -239,104 +239,7 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "Learn more",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": ""
-                }
-            ]
-        },
-        {
-            "key": "field_619f9790e471c",
-            "label": "Call to Action Footer (copy)",
-            "name": "call_to_action_footer_copy",
-            "type": "repeater",
-            "instructions": "This will appear after the grid of events. Should always be one block",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "collapsed": "",
-            "min": 1,
-            "max": 1,
-            "layout": "table",
-            "button_label": "Add block",
-            "sub_fields": [
-                {
-                    "key": "field_619f9790e471d",
-                    "label": "Link",
-                    "name": "link",
-                    "type": "page_link",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "post_type": "",
-                    "taxonomy": "",
-                    "allow_null": 0,
-                    "allow_archives": 1,
-                    "multiple": 0
-                },
-                {
-                    "key": "field_619f9790e471e",
-                    "label": "Title",
-                    "name": "title",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": ""
-                },
-                {
-                    "key": "field_619f9790e471f",
-                    "label": "Description",
-                    "name": "description",
-                    "type": "textarea",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "maxlength": "",
-                    "rows": "",
-                    "new_lines": ""
-                },
-                {
-                    "key": "field_619f9790e4720",
-                    "label": "Button text",
-                    "name": "button_text",
-                    "type": "text",
-                    "instructions": "Defaults to 'Learn more'",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "Learn more",
+                    "default_value": "More",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
@@ -362,5 +265,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1637848987
+    "modified": 1652068949
 }
