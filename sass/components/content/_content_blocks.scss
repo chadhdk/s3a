@@ -443,6 +443,11 @@
 
 .whatson_single {
     margin-bottom: 2rem;
+	.whatson_block_item {
+		.text_container{
+			position: relative;
+		}
+	}
 }
 
 .whatson_grid {
@@ -637,6 +642,7 @@
 .link_item {
     padding: 1rem;
     margin-bottom: 2rem;
+	width:100%;
 	a {
 		color: $magenta;
 		text-decoration: none;
@@ -799,7 +805,7 @@
 	}
 	ul.menu  {
 		margin: 0;
-		padding: 0;
+
 	}
 	
 	ul.menu a {
@@ -1047,7 +1053,7 @@ button.filter {
 
 .event.featured a.decorative{
 	position:absolute;
-	bottom:0;
+	bottom:-1rem;
 	left:50%;
 	transform: translate(-50%, 0);
 }
@@ -1230,6 +1236,9 @@ button.filter {
 	}
 	a.decorative {
 		color: white;
+		position: static;
+		transform: none;
+		margin: 0;
 	}	
 }
 .sidebar_block{

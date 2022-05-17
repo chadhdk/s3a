@@ -1474,7 +1474,7 @@ button#search-toggle {
 
 @media screen and (min-width: 700px) {
 	#hamburger {
-		top: 1rem;
+		top: 2rem;
 	}
 }
 
@@ -1970,6 +1970,10 @@ div#pb_signup_container .newsletter-inner {
 	margin-bottom: 2rem;
 }
 
+.whatson_single .whatson_block_item .text_container {
+	position: relative;
+}
+
 .whatson_grid {
 	gap: 2rem;
 	margin-bottom: 2rem;
@@ -2147,6 +2151,7 @@ div#pb_signup_container .newsletter-inner {
 .link_item {
 	padding: 1rem;
 	margin-bottom: 2rem;
+	width: 100%;
 }
 
 .link_item a {
@@ -2325,7 +2330,6 @@ div#pb_signup_container .newsletter-inner {
 
 .site-footer ul.menu {
 	margin: 0;
-	padding: 0;
 }
 
 .site-footer ul.menu a {
@@ -2579,7 +2583,7 @@ button.filter:hover, button.filter.active {
 
 .event.featured a.decorative {
 	position: absolute;
-	bottom: 0;
+	bottom: -1rem;
 	left: 50%;
 	transform: translate(-50%, 0);
 }
@@ -2757,6 +2761,9 @@ button.filter:hover, button.filter.active {
 
 .content a.decorative, .post-content a.decorative {
 	color: white;
+	position: static;
+	transform: none;
+	margin: 0;
 }
 
 .sidebar_block {
@@ -3465,7 +3472,6 @@ section.content.page_404.margins {
 --------------------------------------------- */
 .alignleft {
 	/*rtl:ignore*/
-	float: left;
 	/*rtl:ignore*/
 	margin-right: 1.5em;
 	margin-bottom: 1.5em;
@@ -3473,7 +3479,6 @@ section.content.page_404.margins {
 
 .alignright {
 	/*rtl:ignore*/
-	float: right;
 	/*rtl:ignore*/
 	margin-left: 1.5em;
 	margin-bottom: 1.5em;

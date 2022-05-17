@@ -225,7 +225,7 @@ function get_home_layouts($id){
                     </div>
                     
                 </section>
-                <?php elseif( 'contact_forms' == $layout_type ): ?>
+                <?php elseif( 'contact_forms' == get_row_layout() ): ?>
                 <div class="content_contact margins white"  id="<?php echo $hash; ?>">
                     <?php $contact_type = get_sub_field('contact_form_type');
                     if('contact'==$contact_type): ?>

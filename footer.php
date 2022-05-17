@@ -47,7 +47,7 @@
 		</div>
 		<div class="footer_row flex fine-print">
 			<small>Studio 3 Arts © <?php echo date('Y'); ?> | Registered Charity Number: 1054793 Company Number: 3177640</small>
-			<a href="https://wearehdk.com"><span class="screen-reader-text">Made by HdK</span><?php echo file_get_contents(get_template_directory() . '/assets/MadebyHdK.svg'); ?></a>
+			<a href="https://wearehdk.com/?utm_source=studio_3_arts&utm_medium=website&utm_campaign=made_by_hdk"><span class="screen-reader-text">Made by HdK</span><?php echo file_get_contents(get_template_directory() . '/assets/MadebyHdK.svg'); ?></a>
 		</div>
 
 	</footer>
